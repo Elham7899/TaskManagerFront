@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AddTaskForm from "./components/AddTaskForm";
+import './index.css';
 
 // Router configuration
 const router = createBrowserRouter([

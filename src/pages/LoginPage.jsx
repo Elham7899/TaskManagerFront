@@ -10,23 +10,25 @@ import { Button } from "../components/ui/button";
 import { Alert, AlertDescription } from "../components/ui/alert";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
   const submit = async (e) => {
-    e.preventDefault();
-    setErr("");
-    try {
-      const token = await apiLogin({ email, password });
-      if (!token) throw new Error("No token received");
-      setToken(token);
-      navigate("/");
-    } catch (error) {
-      setErr(error?.response?.data?.message ?? error.message ?? "Login failed");
-    }
-  };
+  e.preventDefault();
+  setErr("");
+  try {
+    const token = await apiLogin({ userName: username, password });
+    if (!token) throw new Error("No token received");
+    setToken(token);
+    navigate("/");
+  } catch (error) {
+    setErr(error?.response?.data?.message ?? error.message ?? "Login failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -41,16 +43,25 @@ export default function LoginPage() {
             </Alert>
           )}
           <form onSubmit={submit} className="space-y-4">
-            <div>
+                <div>
+              <label className="block text-sm font-medium mb-1">UserName</label>
+              <Input
+                type="username"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="forexample sara"
+                required
+              />
+            </div>
+            {/* <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                required
               />
-            </div>
+            </div> */}
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
               <Input

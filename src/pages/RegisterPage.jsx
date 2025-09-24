@@ -11,22 +11,24 @@ import { Alert, AlertDescription } from "../components/ui/alert";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
+   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
   const submit = async (e) => {
-    e.preventDefault();
-    setErr("");
-    try {
-      const token = await apiRegister({ email, password });
-      if (!token) throw new Error("No token received");
-      setToken(token);
-      navigate("/");
-    } catch (error) {
-      setErr(error?.response?.data?.message ?? error.message ?? "Register failed");
-    }
-  };
+  e.preventDefault();
+  setErr("");
+  try {
+    const token = await apiRegister({ userName: username, email, password });
+    if (!token) throw new Error("No token received");
+    setToken(token);
+    navigate("/");
+  } catch (error) {
+    setErr(error?.response?.data?.message ?? error.message ?? "Register failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -48,6 +50,16 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
+                required
+              />
+            </div>
+             <div>
+              <label className="block text-sm font-medium mb-1">UserName</label>
+              <Input
+                type="username"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                placeholder="username like sara"
                 required
               />
             </div>

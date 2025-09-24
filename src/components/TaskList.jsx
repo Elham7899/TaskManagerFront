@@ -1,49 +1,91 @@
-import { useEffect, useState } from "react";
-import api from "../lib/api";   // ✅ use wrapper
-import AddTaskForm from "./AddTaskForm";
+import { useState, useEffect } from "react";
+import { getAllTasks, getTaskById } from "../api/tasks";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Alert, AlertDescription } from "../components/ui/alert";
 
-function TaskList() {
+export default function TaskList() {
   const [tasks, setTasks] = useState([]);
+  const [taskId, setTaskId] = useState("");
+  const [err, setErr] = useState("");
 
-  const fetchTasks = async () => {
-    try {
-      const res = await api.get("/tasks?page=1&pageSize=10");  // ✅ wrapper
-      console.log("API Response:", res.data);
-      setTasks(res.data.data.items); // ApiResponse<PagedResult<TaskDto>>
-    } catch (err) {
-      console.error("Error fetching tasks:", err);
+const fetchTasks = async () => {
+  try {
+    const taskList = await getAllTasks();
+    console.log("Fetched tasks:", taskList);
+    setTasks(Array.isArray(taskList) ? taskList : []);
+    setErr("");
+  } catch (error) {
+    console.error("fetchTasks error:", error);
+    setErr("Failed to load tasks");
+    setTasks([]);
+  }
+};
+
+const fetchTaskById = async (e) => {
+  e.preventDefault();
+  if (!taskId) return fetchTasks();
+  try {
+    const task = await getTaskById(taskId);
+    setTasks(task ? [task] : []);
+    setErr("");
+  } catch (error) {
+    if (error.response?.status === 401) {
+      setErr("Unauthorized: Please log in again.");
+    } else {
+      setErr("Task not found");
     }
-  };
+    setTasks([]);
+  }
+};
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   return (
-    <div className="p-4">
-      {/* Refresh list after adding */}
-      <AddTaskForm onTaskCreated={() => fetchTasks()} />
-
-      <h2 className="text-xl font-bold mb-4">Tasks</h2>
-      {tasks.length === 0 ? (
-        <p>No tasks available</p>
-      ) : (
-       <ul className="space-y-3">
-  {tasks.map((task) => (
-    <li
-      key={task.id}
-      className="flex justify-between items-center p-4 bg-blue-50 border border-blue-300 rounded-lg shadow-sm"
-    >
-      <span className="text-blue-800 font-medium">{task.title}</span>
-      <span className={`text-sm font-semibold ${task.isCompleted ? "text-green-600" : "text-yellow-600"}`}>
-        {task.isCompleted ? "✅ Done" : "⌛ Pending"}
-      </span>
-    </li>
-  ))}
-</ul>
+    <div className="space-y-4">
+      {err && (
+        <Alert variant="destructive">
+          <AlertDescription>{err}</AlertDescription>
+        </Alert>
       )}
+
+      {/* Filter Form */}
+      <form onSubmit={fetchTaskById} className="flex space-x-2">
+        <Input
+          type="number"
+          placeholder="Enter Task ID"
+          value={taskId}
+          onChange={(e) => setTaskId(e.target.value)}
+        />
+        <Button type="submit">Filter</Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            setTaskId("");
+            fetchTasks();
+          }}
+        >
+          Reset
+        </Button>
+      </form>
+
+      {/* Task List */}
+      <ul className="space-y-2">
+        {Array.isArray(tasks) && tasks.length > 0 ? (
+          tasks.map((task) => (
+            <li key={task.id} className="p-4 border rounded bg-white">
+              <h3 className="font-semibold">{task.title}</h3>
+              <p className="text-sm text-gray-600">{task.description}</p>
+              <p className="text-xs text-gray-400">Status: {task.status}</p>
+            </li>
+          ))
+        ) : (
+          <li className="text-gray-500">No tasks found.</li>
+        )}
+      </ul>
     </div>
   );
 }
-
-export default TaskList;

@@ -8,3 +8,7 @@ export async function login({ userName, password }) {
 export async function register({ userName, email, password }) {
   return api.post("/auth/register", { userName, email, password });
 }
+
+export function getToken() {
+  return JSON.parse(localStorage.getItem("auth")); 
+}

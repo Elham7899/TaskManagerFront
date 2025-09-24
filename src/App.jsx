@@ -1,15 +1,16 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">
         📝 Task Manager
       </h1>
 
-      {/* Simple navigation */}
       <nav className="flex justify-center gap-4 mb-6">
+        <nav className="flex justify-center gap-4 mb-6">
         <Link to="/" className="text-blue-500 hover:underline">
           Home
         </Link>
@@ -23,11 +24,12 @@ function App() {
           Register
         </Link>
       </nav>
+      </nav>
 
-      {/* Render child routes */}
       <Outlet />
     </div>
   );
 }
+
 
 export default App;
