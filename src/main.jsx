@@ -1,3 +1,4 @@
+// main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -5,26 +6,25 @@ import App from "./App";
 import TasksPage from "./pages/TasksPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import AssignRolePage from "./pages/AssignRolePage";
+import PrivateRoute from "./components/PrivateRoute";  // ✅ only this
 import AddTaskForm from "./components/AddTaskForm";
-import './index.css';
+import "./index.css";
 
-// Router configuration
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />,   // ✅ app layout (navbar etc.)
     children: [
       { index: true, element: <TasksPage /> },
+      { path: "tasks/new", element: <AddTaskForm /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
       {
-        path: "tasks/new",
-        element: (
-          <ProtectedRoute>
-            <AddTaskForm />
-          </ProtectedRoute>
-        ),
+        element: <PrivateRoute />, // ✅ only logged-in users can access
+        children: [
+          { path: "assign-role", element: <AssignRolePage /> },
+        ],
       },
     ],
   },

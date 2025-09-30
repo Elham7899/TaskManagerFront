@@ -1,6 +1,6 @@
 // src/api/tasks.js
-import api from "../api/api";
-import { getToken } from "../lib/auth"; // ✅ use this
+import api from "../lib/api";
+import { getToken } from "../lib/auth";
 
 export async function getAllTasks(page = 1, pageSize = 10) {
   const token = getToken();
@@ -14,11 +14,12 @@ export async function getAllTasks(page = 1, pageSize = 10) {
 
 export async function getTaskById(id) {
   const token = getToken();
-  console.log("Token used in getTaskById:", token); // ✅ Add this
+  console.log("Token used in getTaskById:", token); // should log a string like "eyJhbGciOi..."
+
   const response = await api.get(`/tasks/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return response.data.data;
+  return response.data;
 }

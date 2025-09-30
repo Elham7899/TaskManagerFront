@@ -1,3 +1,4 @@
+//src/components/ui/tasklist.jsx
 import { useState, useEffect } from "react";
 import { getAllTasks, getTaskById } from "../api/tasks";
 import { Input } from "../components/ui/input";
@@ -27,6 +28,8 @@ const fetchTaskById = async (e) => {
   if (!taskId) return fetchTasks();
   try {
     const task = await getTaskById(taskId);
+    console.log("Fetched single task:", task);
+
     setTasks(task ? [task] : []);
     setErr("");
   } catch (error) {

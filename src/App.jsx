@@ -23,6 +23,9 @@ function App() {
         <Link to="/register" className="text-blue-500 hover:underline">
           Register
         </Link>
+        <Link to="/assign-role" className="text-blue-500 hover:underline">
+            Assign Role
+          </Link>
       </nav>
       </nav>
 
