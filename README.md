@@ -1,12 +1,75 @@
-# React + Vite
+## 🎨 Task Manager Frontend — React + Vite + Tailwind
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+Lightweight React frontend for the Task Manager API
+, featuring JWT authentication, role management, and task operations.
+
+## 🌟 Features
+
+🔑 Authentication with JWT
+👥 Role Management (assign roles to users)
+✅ Task Management (list, filter, create, update)
+🎨 Clean UI with Tailwind CSS + ShadCN components
+🚦 Route protection using React Router (PrivateRoute & ProtectedRoute)
+⚡ Powered by Vite for fast builds
+
+## 📂 Project Structure
+src/
+ ├── api/            # API calls (auth, tasks, users)
+ ├── components/     # Shared components (ProtectedRoute, UI, forms)
+ ├── pages/          # Pages (Login, Register, AssignRole, Tasks)
+ ├── lib/            # Auth & API helpers
+ ├── main.jsx        # App entrypoint with routing
+ └── index.css       # Tailwind base styles
+
+## 🚀 Getting Started
+### Prerequisites
+
+Node.js 18+
+Task Manager API running (backend repo)
+Installation
+
+# Clone repo
+git clone https://github.com/Elham7899/TaskManagerFront.git
+cd TaskManagerFront
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+
+## Frontend runs at:
+👉 http://localhost:5173
+
+## Backend runs at (default):
+👉 http://localhost:5215
+
+## 🔧 Configuration
+
+Set your API base URL in src/lib/api.js:
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:5215/api", // Backend URL
+});
+
+export default api;
+
+## 🛠 Roadmap
+
+ Polish UI with dashboards & charts
+ Improve role-based access handling
+ Add notifications (toasts) for API errors
+ Deploy frontend to Vercel / Netlify
+
+## 📜 License
+
+MIT License — see LICENSE
+ for details.
+
